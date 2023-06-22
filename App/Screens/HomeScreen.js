@@ -1,4 +1,12 @@
-import { StyleSheet, Text, View, Image, FlatList } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  FlatList,
+  TouchableOpacity,
+  Dimensions,
+} from "react-native";
 import React, { useEffect, useState } from "react";
 import ChatFaceData from "../Services/ChatFaceData";
 
@@ -10,6 +18,11 @@ const HomeScreen = () => {
     setChatFaceData(ChatFaceData);
     setSelectedChatFaceData(ChatFaceData[0]);
   }, []);
+
+  const onChatFacePress = (id) => {
+    setSelectedChatFaceData(ChatFaceData[id - 1]);
+  };
+
   return (
     <View style={{ alignItems: "center", paddingTop: 90 }}>
       <Text style={[{ color: selectedChatFaceData.primary }, { fontSize: 30 }]}>
@@ -43,12 +56,15 @@ const HomeScreen = () => {
           horizontal={true}
           renderItem={({ item }) =>
             selectedChatFaceData.id != item.id && (
-              <View style={{ margin: 15 }}>
+              <TouchableOpacity
+                style={{ margin: 15 }}
+                onPress={() => onChatFacePress(item.id)}
+              >
                 <Image
                   source={{ uri: item.image }}
                   style={{ width: 40, height: 40 }}
                 />
-              </View>
+              </TouchableOpacity>
             )
           }
         />
@@ -56,6 +72,20 @@ const HomeScreen = () => {
           Choose Your Fav ChatBuddy
         </Text>
       </View>
+      <TouchableOpacity
+        style={[
+          { backgroundColor: selectedChatFaceData.primary },
+          {
+            padding: 17,
+            width: Dimensions.get("screen").width * 0.6,
+            borderRadius: 100,
+            alignItems: "center",
+            marginTop: 30,
+          },
+        ]}
+      >
+        <Text style={{ fontSize: 16, color: "#fff" }}>Lets Chat</Text>
+      </TouchableOpacity>
     </View>
   );
 };
